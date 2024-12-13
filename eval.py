@@ -17,9 +17,9 @@ parser.add_argument('--threads', type=int, default=0, help='number of threads fo
 parser.add_argument('--rgb_range', type=int, default=1, help='maximum value of RGB')
 # parser.add_argument('--data_test', type=str, default='../dataset/LIE/LOL-test/raw')
 # parser.add_argument('--data_test', type=str, default='../dataset/LIE/SICE-test/image')
-parser.add_argument('--data_test', type=str, default='../dataset/LIE/MEF')
+parser.add_argument('--data_test', type=str, default='./datasets/MEF')
 parser.add_argument('--model', default='weights/PairLIE.pth', help='Pretrained base model')  
-parser.add_argument('--output_folder', type=str, default='results/MEF/')
+parser.add_argument('--output_folder', type=str, default='./results/MEF/')
 opt = parser.parse_args()
 
 
@@ -49,12 +49,19 @@ def eval():
             # flops, params = profile(model, (input,))
             # print('flops: ', flops, 'params: ', params)
 
+        # if not os.path.exists(opt.output_folder):
+        #     os.mkdir(opt.output_folder)
+        #     os.mkdir(opt.output_folder + 'L/')
+        #     os.mkdir(opt.output_folder + 'R/')
+        #     os.mkdir(opt.output_folder + 'I/')  
+        #     os.mkdir(opt.output_folder + 'D/')         
+            
         if not os.path.exists(opt.output_folder):
-            os.mkdir(opt.output_folder)
-            os.mkdir(opt.output_folder + 'L/')
-            os.mkdir(opt.output_folder + 'R/')
-            os.mkdir(opt.output_folder + 'I/')  
-            os.mkdir(opt.output_folder + 'D/')                       
+            os.makedirs(opt.output_folder)  # 递归创建多层目录
+            os.makedirs(os.path.join(opt.output_folder, 'L'))
+            os.makedirs(os.path.join(opt.output_folder, 'R'))
+            os.makedirs(os.path.join(opt.output_folder, 'I'))
+            os.makedirs(os.path.join(opt.output_folder, 'D'))              
 
         L = L.cpu()
         R = R.cpu()
